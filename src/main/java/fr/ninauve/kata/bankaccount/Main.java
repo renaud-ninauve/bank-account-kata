@@ -1,13 +1,21 @@
 package fr.ninauve.kata.bankaccount;
 
+import fr.ninauve.kata.bankaccount.io.Console;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Main {
 
+    private final Console console;
+
+    @Autowired
+    public Main(Console console) {
+        this.console = console;
+    }
+
     public void execute() {
-        System.out.println("hello");
     }
 
     public static void main(String... args) {
