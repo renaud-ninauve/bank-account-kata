@@ -16,6 +16,12 @@ public class Main {
     }
 
     public void execute() {
+
+        console.printLine(Messages.WHAT_ACCOUNT_NUMBER);
+        console.waitAndGetUserInput();
+        console.printLine(Messages.WHAT_DEPOSIT_AMOUNT);
+        console.waitAndGetUserInput();
+        console.printLine(Messages.DEPOSIT_DONE);
     }
 
     public static void main(String... args) {
