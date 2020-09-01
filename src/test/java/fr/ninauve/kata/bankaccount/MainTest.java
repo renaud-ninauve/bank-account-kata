@@ -14,8 +14,6 @@ import static org.mockito.Mockito.*;
 class MainTest {
 
     private static final String ACCOUNT_NUMBER = "1234";
-    private static final String PROMPT_ACCOUNT_NUMBER = "Account Number?";
-    private static final String PROMPT_DEPOSIT_AMOUNT = "Deposit Amount?";
 
     private Main main;
 
@@ -34,8 +32,8 @@ class MainTest {
         main.execute();
 
         final InOrder inOrder = inOrder(console);
-        inOrder.verify(console).printLine(PROMPT_ACCOUNT_NUMBER);
-        inOrder.verify(console).printLine(PROMPT_DEPOSIT_AMOUNT);
+        inOrder.verify(console).printLine(MessagesTest.WHAT_ACCOUNT_NUMBER);
+        inOrder.verify(console).printLine(MessagesTest.WHAT_DEPOSIT_AMOUNT);
     }
 
     @Test
@@ -46,6 +44,6 @@ class MainTest {
 
         main.execute();
 
-        verify(console, times(1)).printLine("Deposit done.");
+        verify(console, times(1)).printLine(MessagesTest.DEPOSIT_DONE);
     }
 }
