@@ -22,12 +22,16 @@ class MainTest {
     private static final Clock CLOCK =
             Clock.fixed(ZONED_DATE_TIME.toInstant(), ZONED_DATE_TIME.getZone());
     private static final String FORMATTED_DEPOSIT = "2020-09-12 11:43;deposit;4200;4200";
+    private static final int MENU_DEPOSIT = 1;
+    private static final int MENU_EXIT = 2;
 
     private Main main;
     @Mock
     private Console console;
     @Mock
     private OperationFormatter operationFormatter;
+    @Mock
+    private ReadValueAction<Integer> readMenu;
     @Mock
     private ReadValueAction<String> readAccountNumber;
     @Mock
@@ -36,12 +40,13 @@ class MainTest {
     @BeforeEach
     public void setUp() {
 
-        this.main = new Main(console, operationFormatter, CLOCK, readAccountNumber, readDepositAmount);
+        this.main = new Main(console, operationFormatter, CLOCK, readMenu, readAccountNumber, readDepositAmount);
     }
 
     @Test
     public void should_ask_account_number_then_amount() {
 
+        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_EXIT);
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);
         when(readDepositAmount.readValue(any()))
@@ -57,6 +62,7 @@ class MainTest {
     @Test
     public void should_acknowledge_deposit() {
 
+        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_EXIT);
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);
         when(readDepositAmount.readValue(any()))
@@ -70,6 +76,7 @@ class MainTest {
     @Test
     public void should_print_deposit() {
 
+        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_EXIT);
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);
         when(readDepositAmount.readValue(any()))
@@ -82,5 +89,23 @@ class MainTest {
         verify(console).printLine(MessagesTest.DEPOSIT_DONE);
         verify(operationFormatter).formatDeposit(eq(ZonedDateTime.now(CLOCK)), eq(4200l), eq(4200l));
         verify(console).printLine(FORMATTED_DEPOSIT);
+    }
+
+    @Test
+    public void should_do_another_deposit_if_chosen() {
+
+        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_DEPOSIT, MENU_EXIT);
+
+        when(readAccountNumber.readValue(any()))
+                .thenReturn(ACCOUNT_NUMBER);
+        when(readDepositAmount.readValue(any()))
+                .thenReturn(4200l);
+        when(operationFormatter.formatDeposit(any(), anyLong(), anyLong()))
+                .thenReturn(FORMATTED_DEPOSIT);
+
+        main.execute();
+
+        verify(console, times(2)).printLine(MessagesTest.DEPOSIT_DONE);
+        verify(console, times(2)).printLine(FORMATTED_DEPOSIT);
     }
 }

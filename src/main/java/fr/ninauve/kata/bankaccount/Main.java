@@ -9,20 +9,29 @@ import org.springframework.stereotype.Component;
 import java.time.Clock;
 import java.time.ZonedDateTime;
 
+import static fr.ninauve.kata.bankaccount.action.ReadValueAction.*;
+
 @Component
 public class Main {
 
     private final Console console;
     private final OperationFormatter operationFormatter;
     private final Clock clock;
+    private final ReadValueAction<Integer> readMenu;
     private final ReadValueAction<String> readAccountNumber;
     private final ReadValueAction<Long> readDepositAmount;
 
-    public Main(Console console, OperationFormatter operationFormatter, Clock clock, ReadValueAction<String> readAccountNumber, ReadValueAction<Long> readDepositAmount) {
+    public Main(Console console,
+                OperationFormatter operationFormatter,
+                Clock clock,
+                ReadValueAction<Integer> readMenu,
+                ReadValueAction<String> readAccountNumber,
+                ReadValueAction<Long> readDepositAmount) {
 
         this.console = console;
         this.operationFormatter = operationFormatter;
         this.clock = clock;
+        this.readMenu = readMenu;
         this.readAccountNumber = readAccountNumber;
         this.readDepositAmount = readDepositAmount;
     }
@@ -30,7 +39,8 @@ public class Main {
     @Autowired
     public Main(Console console, OperationFormatter operationFormatter, Clock clock) {
 
-        this(console, operationFormatter, clock, ReadValueAction.READ_ACCOUNT_NUMBER, ReadValueAction.READ_DEPOSIT_AMOUNT);
+        this(console, operationFormatter, clock,
+                READ_MENU, READ_ACCOUNT_NUMBER, READ_DEPOSIT_AMOUNT);
     }
 
     public void execute() {

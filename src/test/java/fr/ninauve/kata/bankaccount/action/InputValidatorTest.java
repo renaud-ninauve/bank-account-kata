@@ -1,6 +1,5 @@
 package fr.ninauve.kata.bankaccount.action;
 
-import fr.ninauve.kata.bankaccount.action.InputValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -32,6 +31,24 @@ class InputValidatorTest {
     public void should_return_true_when_valid_amount(final String amount) {
 
         final boolean actual = inputValidator.isValidAmountInCents(amount);
+
+        assertTrue(actual);
+    }
+
+    @ParameterizedTest(name = "invalid menu")
+    @ValueSource(strings = {"", "abcd", "-12", "3.14", "3"})
+    public void should_return_false_when_invalid_menu(final String input) {
+
+        final boolean actual = inputValidator.isValidMenu(input);
+
+        assertFalse(actual);
+    }
+
+    @ParameterizedTest(name = "valid menu")
+    @ValueSource(strings = {"1", "2"})
+    public void should_return_true_when_valid_menu(final String input) {
+
+        final boolean actual = inputValidator.isValidMenu(input);
 
         assertTrue(actual);
     }
