@@ -1,5 +1,6 @@
 package fr.ninauve.kata.bankaccount;
 
+import fr.ninauve.kata.bankaccount.action.MenuItem;
 import fr.ninauve.kata.bankaccount.action.ReadValueAction;
 import fr.ninauve.kata.bankaccount.io.Console;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +23,6 @@ class MainTest {
     private static final Clock CLOCK =
             Clock.fixed(ZONED_DATE_TIME.toInstant(), ZONED_DATE_TIME.getZone());
     private static final String FORMATTED_DEPOSIT = "2020-09-12 11:43;deposit;4200;4200";
-    private static final int MENU_DEPOSIT = 1;
-    private static final int MENU_EXIT = 2;
 
     private Main main;
     @Mock
@@ -31,7 +30,7 @@ class MainTest {
     @Mock
     private OperationFormatter operationFormatter;
     @Mock
-    private ReadValueAction<Integer> readMenu;
+    private ReadValueAction<MenuItem> readMenu;
     @Mock
     private ReadValueAction<String> readAccountNumber;
     @Mock
@@ -46,7 +45,7 @@ class MainTest {
     @Test
     public void should_ask_account_number_then_amount() {
 
-        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_EXIT);
+        when(readMenu.readValue(any())).thenReturn(MenuItem.DEPOSIT, MenuItem.EXIT);
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);
         when(readDepositAmount.readValue(any()))
@@ -62,7 +61,7 @@ class MainTest {
     @Test
     public void should_acknowledge_deposit() {
 
-        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_EXIT);
+        when(readMenu.readValue(any())).thenReturn(MenuItem.DEPOSIT, MenuItem.EXIT);
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);
         when(readDepositAmount.readValue(any()))
@@ -76,7 +75,7 @@ class MainTest {
     @Test
     public void should_print_deposit() {
 
-        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_EXIT);
+        when(readMenu.readValue(any())).thenReturn(MenuItem.DEPOSIT, MenuItem.EXIT);
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);
         when(readDepositAmount.readValue(any()))
@@ -94,7 +93,7 @@ class MainTest {
     @Test
     public void should_do_another_deposit_if_chosen() {
 
-        when(readMenu.readValue(any())).thenReturn(MENU_DEPOSIT, MENU_DEPOSIT, MENU_EXIT);
+        when(readMenu.readValue(any())).thenReturn(MenuItem.DEPOSIT, MenuItem.DEPOSIT, MenuItem.EXIT);
 
         when(readAccountNumber.readValue(any()))
                 .thenReturn(ACCOUNT_NUMBER);

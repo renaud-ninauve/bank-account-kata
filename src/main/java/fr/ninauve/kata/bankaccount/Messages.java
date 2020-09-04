@@ -1,6 +1,5 @@
 package fr.ninauve.kata.bankaccount;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;

@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static fr.ninauve.kata.bankaccount.action.InputValidator.isValidAmountInCents;
+import static fr.ninauve.kata.bankaccount.action.InputValidator.isValidMenu;
 
 public class ReadValueAction<T> {
 
@@ -21,8 +22,8 @@ public class ReadValueAction<T> {
             new ReadValueAction<>(s -> s, s -> true, Messages.WHAT_ACCOUNT_NUMBER, "");
     public static ReadValueAction<Long> READ_DEPOSIT_AMOUNT =
             new ReadValueAction<>(s -> Long.parseLong(s), s -> isValidAmountInCents(s), Messages.WHAT_DEPOSIT_AMOUNT, Messages.BAD_PARAM_AMOUNT);
-    public static ReadValueAction<Integer> READ_MENU =
-            new ReadValueAction<>(s -> Integer.parseInt(s), s -> true, Messages.MENU, Messages.BAD_INPUT_MENU);
+    public static ReadValueAction<MenuItem> READ_MENU =
+            new ReadValueAction<>(s -> MenuItem.fromValueOrNull(s), s -> isValidMenu(s), Messages.MENU, Messages.BAD_INPUT_MENU);
 
     public ReadValueAction(Function<String, T> converter, Predicate<String> validator, List<String> prompt, String validFormatLabel) {
 
