@@ -1,5 +1,6 @@
 package fr.ninauve.kata.bankaccount;
 
+import fr.ninauve.kata.bankaccount.action.ReadValueAction;
 import fr.ninauve.kata.bankaccount.io.Console;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,36 +30,38 @@ class MainTest {
     @Mock
     private OperationFormatter operationFormatter;
     @Mock
-    private InputValidator inputValidator;
+    private ReadValueAction<String> readAccountNumber;
+    @Mock
+    private ReadValueAction<Long> readDepositAmount;
 
     @BeforeEach
     public void setUp() {
 
-        this.main = new Main(console, operationFormatter, CLOCK, inputValidator);
+        this.main = new Main(console, operationFormatter, CLOCK, readAccountNumber, readDepositAmount);
     }
 
     @Test
     public void should_ask_account_number_then_amount() {
 
-        when(inputValidator.isValidAmountInCents(anyString()))
-                .thenReturn(true);
-        when(console.waitAndGetUserInput())
-                .thenReturn(ACCOUNT_NUMBER, "4200");
+        when(readAccountNumber.readValue(any()))
+                .thenReturn(ACCOUNT_NUMBER);
+        when(readDepositAmount.readValue(any()))
+                .thenReturn(4200l);
 
         main.execute();
 
-        final InOrder inOrder = inOrder(console);
-        inOrder.verify(console).printLine(MessagesTest.WHAT_ACCOUNT_NUMBER);
-        inOrder.verify(console).printLine(MessagesTest.WHAT_DEPOSIT_AMOUNT);
+        final InOrder inOrder = inOrder(readAccountNumber, readDepositAmount);
+        inOrder.verify(readAccountNumber).readValue(console);
+        inOrder.verify(readDepositAmount).readValue(console);
     }
 
     @Test
     public void should_acknowledge_deposit() {
 
-        when(inputValidator.isValidAmountInCents(anyString()))
-                .thenReturn(true);
-        when(console.waitAndGetUserInput())
-                .thenReturn(ACCOUNT_NUMBER, "4200");
+        when(readAccountNumber.readValue(any()))
+                .thenReturn(ACCOUNT_NUMBER);
+        when(readDepositAmount.readValue(any()))
+                .thenReturn(4200l);
 
         main.execute();
 
@@ -68,10 +71,10 @@ class MainTest {
     @Test
     public void should_print_deposit() {
 
-        when(inputValidator.isValidAmountInCents(anyString()))
-                .thenReturn(true);
-        when(console.waitAndGetUserInput())
-                .thenReturn(ACCOUNT_NUMBER, "4200");
+        when(readAccountNumber.readValue(any()))
+                .thenReturn(ACCOUNT_NUMBER);
+        when(readDepositAmount.readValue(any()))
+                .thenReturn(4200l);
         when(operationFormatter.formatDeposit(any(), anyLong(), anyLong()))
                 .thenReturn(FORMATTED_DEPOSIT);
 
@@ -85,10 +88,10 @@ class MainTest {
     @Test
     public void should_validate_deposit_amount() {
 
-        when(inputValidator.isValidAmountInCents(anyString()))
-                .thenReturn(false, true);
-        when(console.waitAndGetUserInput())
-                .thenReturn(ACCOUNT_NUMBER, "xxxx", "4200");
+        when(readAccountNumber.readValue(any()))
+                .thenReturn(ACCOUNT_NUMBER);
+        when(readDepositAmount.readValue(any()))
+                .thenReturn(4200l);
         when(operationFormatter.formatDeposit(any(), anyLong(), anyLong()))
                 .thenReturn(FORMATTED_DEPOSIT);
 
