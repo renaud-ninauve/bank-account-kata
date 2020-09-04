@@ -5,14 +5,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.time.Clock;
+
 @Component
 public class Main {
 
     private final Console console;
+    private final OperationFormatter operationFormatter;
+    private final Clock clock;
 
     @Autowired
-    public Main(Console console) {
+    public Main(Console console, OperationFormatter operationFormatter, Clock clock) {
+
         this.console = console;
+        this.operationFormatter = operationFormatter;
+        this.clock = clock;
     }
 
     public void execute() {
