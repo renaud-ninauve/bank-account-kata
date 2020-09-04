@@ -3,7 +3,9 @@ package fr.ninauve.kata.bankaccount.action;
 import fr.ninauve.kata.bankaccount.io.Console;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -12,6 +14,7 @@ import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ReadValueActionTest {
 
     private static final String INPUT = "1234";
@@ -57,8 +60,7 @@ class ReadValueActionTest {
 
         when(console.waitAndGetUserInput()).thenReturn(INVALID_INPUT, INPUT);
         when(converter.apply(INPUT)).thenReturn(42l);
-        when(validator.test(INVALID_INPUT)).thenReturn(false);
-        when(validator.test(INPUT)).thenReturn(true);
+        when(validator.test(anyString())).thenReturn(false, true);
 
         final Long actual = readValueAction.readValue(console);
 

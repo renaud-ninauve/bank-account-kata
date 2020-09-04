@@ -37,6 +37,14 @@ public class ReadValueAction<T> {
 
     public T readValue(Console console) {
 
-        return null;
+        while (true) {
+            console.printLines(prompt);
+            final String input = console.waitAndGetUserInput();
+            if (validator.test(input)) {
+                return converter.apply(input);
+            } else {
+                console.printLine(validFormatLabel);
+            }
+        }
     }
 }
