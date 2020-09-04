@@ -29,8 +29,20 @@ public class Main {
 
         console.printLine(Messages.WHAT_ACCOUNT_NUMBER);
         console.waitAndGetUserInput();
-        console.printLine(Messages.WHAT_DEPOSIT_AMOUNT);
-        final String amountInput = console.waitAndGetUserInput();
+
+        boolean amountInputIsValid = false;
+        String amountInput = null;
+        while(!amountInputIsValid) {
+
+            console.printLine(Messages.WHAT_DEPOSIT_AMOUNT);
+            amountInput = console.waitAndGetUserInput();
+            amountInputIsValid = inputValidator.isValidAmountInCents(amountInput);
+
+            if (!amountInputIsValid) {
+                console.printLine(Messages.BAD_PARAM_AMOUNT);
+            }
+        }
+
         final long amount = Long.parseLong(amountInput);
         console.printLine(Messages.DEPOSIT_DONE);
         final String formattedDeposit = operationFormatter.formatDeposit(ZonedDateTime.now(clock), amount, amount);
