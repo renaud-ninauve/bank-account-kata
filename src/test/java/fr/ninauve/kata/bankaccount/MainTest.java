@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.*;
 
-import static fr.ninauve.kata.bankaccount.MessagesTest.BAD_PARAM_AMOUNT;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,22 +81,6 @@ class MainTest {
 
         verify(console).printLine(MessagesTest.DEPOSIT_DONE);
         verify(operationFormatter).formatDeposit(eq(ZonedDateTime.now(CLOCK)), eq(4200l), eq(4200l));
-        verify(console).printLine(FORMATTED_DEPOSIT);
-    }
-
-    @Test
-    public void should_validate_deposit_amount() {
-
-        when(readAccountNumber.readValue(any()))
-                .thenReturn(ACCOUNT_NUMBER);
-        when(readDepositAmount.readValue(any()))
-                .thenReturn(4200l);
-        when(operationFormatter.formatDeposit(any(), anyLong(), anyLong()))
-                .thenReturn(FORMATTED_DEPOSIT);
-
-        main.execute();
-
-        verify(console).printLine(BAD_PARAM_AMOUNT);
         verify(console).printLine(FORMATTED_DEPOSIT);
     }
 }

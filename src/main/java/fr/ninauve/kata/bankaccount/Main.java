@@ -7,6 +7,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.time.Clock;
+import java.time.ZonedDateTime;
 
 @Component
 public class Main {
@@ -34,9 +35,11 @@ public class Main {
 
     public void execute() {
 
-        // console.printLine(Messages.DEPOSIT_DONE);
-        // final String formattedDeposit = operationFormatter.formatDeposit(ZonedDateTime.now(clock), amount, amount);
-        // console.printLine(formattedDeposit);
+        final String accountNumber = readAccountNumber.readValue(console);
+        final Long depositAmount = readDepositAmount.readValue(console);
+        console.printLine(Messages.DEPOSIT_DONE);
+        final String formattedDeposit = operationFormatter.formatDeposit(ZonedDateTime.now(clock), depositAmount, depositAmount);
+        console.printLine(formattedDeposit);
     }
 
     public static void main(String... args) {
