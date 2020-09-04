@@ -37,6 +37,9 @@ class MainTest {
     @Test
     public void should_ask_account_number_then_amount() {
 
+        when(console.waitAndGetUserInput())
+                .thenReturn(ACCOUNT_NUMBER, "4200");
+
         main.execute();
 
         final InOrder inOrder = inOrder(console);
