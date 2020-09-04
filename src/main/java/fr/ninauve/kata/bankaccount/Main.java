@@ -32,7 +32,7 @@ public class Main {
 
         boolean amountInputIsValid = false;
         String amountInput = null;
-        while(!amountInputIsValid) {
+        while (!amountInputIsValid) {
 
             console.printLine(Messages.WHAT_DEPOSIT_AMOUNT);
             amountInput = console.waitAndGetUserInput();

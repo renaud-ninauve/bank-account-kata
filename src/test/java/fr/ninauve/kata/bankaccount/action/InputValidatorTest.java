@@ -1,5 +1,6 @@
-package fr.ninauve.kata.bankaccount;
+package fr.ninauve.kata.bankaccount.action;
 
+import fr.ninauve.kata.bankaccount.action.InputValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
