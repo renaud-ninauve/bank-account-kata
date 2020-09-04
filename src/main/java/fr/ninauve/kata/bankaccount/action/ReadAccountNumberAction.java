@@ -31,6 +31,7 @@ public class ReadAccountNumberAction implements Action {
     @Override
     public void execute() {
 
-
+        final String account = readAccountNumber.readValue(console);
+        session.setAccountNumber(account);
     }
 }

@@ -31,6 +31,7 @@ public class ReadAmountAction implements Action {
     @Override
     public void execute() {
 
-
+        final Long amount = readAmount.readValue(console);
+        session.setAmontInCents(amount);
     }
 }

@@ -31,5 +31,7 @@ public class ReadMenuItemAction implements Action {
     @Override
     public void execute() {
 
+        final MenuItem menuItem = readMenuItem.readValue(console);
+        session.setMenuItem(menuItem);
     }
 }
