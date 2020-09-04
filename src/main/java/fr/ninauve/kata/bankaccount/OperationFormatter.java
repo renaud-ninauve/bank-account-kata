@@ -13,10 +13,10 @@ public class OperationFormatter {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("YYYY-MM-dd hh:mm");
     private static final String OPERATION_DEPOSIT = "deposit";
 
-    public String formatDeposit(ZonedDateTime dateTime, long amount, long balance) {
+    public String formatDeposit(ZonedDateTime dateTime, long amountInCents, long balanceInCents) {
 
         final String dateTimeFormatted = dateTime.format(DATE_TIME_FORMATTER);
-        return Stream.of(dateTimeFormatted, OPERATION_DEPOSIT, "" + amount, "" + balance)
+        return Stream.of(dateTimeFormatted, OPERATION_DEPOSIT, "" + amountInCents, "" + balanceInCents)
                 .collect(Collectors.joining(";"));
     }
 }

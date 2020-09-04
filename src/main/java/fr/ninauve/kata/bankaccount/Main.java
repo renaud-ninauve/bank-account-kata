@@ -14,13 +14,15 @@ public class Main {
     private final Console console;
     private final OperationFormatter operationFormatter;
     private final Clock clock;
+    private final InputValidator inputValidator;
 
     @Autowired
-    public Main(Console console, OperationFormatter operationFormatter, Clock clock) {
+    public Main(Console console, OperationFormatter operationFormatter, Clock clock, InputValidator inputValidator) {
 
         this.console = console;
         this.operationFormatter = operationFormatter;
         this.clock = clock;
+        this.inputValidator = inputValidator;
     }
 
     public void execute() {

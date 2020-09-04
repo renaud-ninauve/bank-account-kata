@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.*;
 
+import static fr.ninauve.kata.bankaccount.MessagesTest.BAD_PARAM_AMOUNT;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,16 +28,20 @@ class MainTest {
     private Console console;
     @Mock
     private OperationFormatter operationFormatter;
+    @Mock
+    private InputValidator inputValidator;
 
     @BeforeEach
     public void setUp() {
 
-        this.main = new Main(console, operationFormatter, CLOCK);
+        this.main = new Main(console, operationFormatter, CLOCK, inputValidator);
     }
 
     @Test
     public void should_ask_account_number_then_amount() {
 
+        when(inputValidator.isValidAmountInCents(anyString()))
+                .thenReturn(true);
         when(console.waitAndGetUserInput())
                 .thenReturn(ACCOUNT_NUMBER, "4200");
 
@@ -50,6 +55,8 @@ class MainTest {
     @Test
     public void should_acknowledge_deposit() {
 
+        when(inputValidator.isValidAmountInCents(anyString()))
+                .thenReturn(true);
         when(console.waitAndGetUserInput())
                 .thenReturn(ACCOUNT_NUMBER, "4200");
 
@@ -61,6 +68,8 @@ class MainTest {
     @Test
     public void should_print_deposit() {
 
+        when(inputValidator.isValidAmountInCents(anyString()))
+                .thenReturn(true);
         when(console.waitAndGetUserInput())
                 .thenReturn(ACCOUNT_NUMBER, "4200");
         when(operationFormatter.formatDeposit(any(), anyLong(), anyLong()))
@@ -70,6 +79,22 @@ class MainTest {
 
         verify(console).printLine(MessagesTest.DEPOSIT_DONE);
         verify(operationFormatter).formatDeposit(eq(ZonedDateTime.now(CLOCK)), eq(4200l), eq(4200l));
+        verify(console).printLine(FORMATTED_DEPOSIT);
+    }
+
+    @Test
+    public void should_validate_deposit_amount() {
+
+        when(inputValidator.isValidAmountInCents(anyString()))
+                .thenReturn(false, true);
+        when(console.waitAndGetUserInput())
+                .thenReturn(ACCOUNT_NUMBER, "xxxx", "4200");
+        when(operationFormatter.formatDeposit(any(), anyLong(), anyLong()))
+                .thenReturn(FORMATTED_DEPOSIT);
+
+        main.execute();
+
+        verify(console).printLine(BAD_PARAM_AMOUNT);
         verify(console).printLine(FORMATTED_DEPOSIT);
     }
 }
